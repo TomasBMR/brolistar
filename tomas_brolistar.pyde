@@ -1,44 +1,38 @@
 #Brólistar - A estrelinha briguenta
+from personagem import*
 
 w = 300
 h = 300
-
-bx = w/2
-by = h/2
-bs = 10
-vel = 10
+player = personagem (w/2,h/2,w,h)
 
 
 def setup():
-    size(200,200, P3D)
+    size(400,400, P3D)
     
 def draw():
+    cx, cy = cameraMov (player.x,player.y,w,h)
+    camera(cx, cy,100, #olho
+    cx,cy,1, #bola
+    0, 1, 0); #up
+
+    
     background(0)
     fill(0,255,0)
     rect(0,0,w,h/2)
-    
     fill(0,0,255)
     rect(0,h/2,w,h/2)
     
-    fill(255,0,0)
-    ellipse(bx,by,bs,bs)
-    
-    camera(bx, by,100, #olho
-         bx,by,1, #bola
-         0, 1, 0); #up
-
+    player.update()
     
 def keyPressed():
-    global bx, by
+   player.move(keyCode)
+   
+def keyReleased():
+    player.move(keyCode,True)
     
-    if keyCode == 37:
-        bx -= vel
-    if keyCode == 38:
-        by -= vel
-    if keyCode == 39:
-        bx += vel
-    if keyCode == 40:
-        by += vel
-        
-    bx = constrain(bx,bs/2,w - bs/2)
-    by = constrain(by,bs/2,h - bs/2)
+def cameraMov (x,y,w,h):
+    margem = 55
+    x = constrain(x, margem, w-margem)
+    y = constrain(y, margem, h-margem)
+    
+    return x,y
